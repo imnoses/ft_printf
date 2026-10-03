@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                       :::      ::::::::    */
-/*   writers.c                                         :+:      :+:    :+:    */
+/*   helpers.c                                         :+:      :+:    :+:    */
 /*                                                   +:+ +:+         +:+      */
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
-/*   Created: 2026/10/02 19:17:57 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/02 19:24:07 by spuschma        ###   ########.fr        */
+/*   Created: 2026/10/03 16:30:37 by spuschma         #+#    #+#              */
+/*   Updated: 2026/10/03 16:39:52 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdarg.h>
 #include <unistd.h>
 
-int	write_char(va_list *args)
+int	put_unsigned(unsigned int i)
 {
-	char	c;
+	int	ret;
 
-	c = (char)va_arg(*args, int);
-	return (write(1, &c, 1));
+	if (i >= 10)
+		ret = put_unsigned(i / 10);
+	return (ret + write(1, &"0123456789"[i % 10], 1));
 }
-
-int	write_string(va_list *args);
-int	write_decimal(va_list *args);
-int	write_unsigned(va_list *args);
-int	write_hex(va_list *args, int is_uppercase);
