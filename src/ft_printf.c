@@ -6,7 +6,7 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 13:20:50 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 17:42:47 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../ft_printf.h"
@@ -52,14 +52,12 @@ int	ft_printf(const char *s, ...)
 	int		count;
 	int		res;
 
+	count = 0;
 	va_start(args, s);
 	while (*s)
 	{
-		if (*s == '%')
-		{
-			res = handle_var(*(++s), &args);
-			s++;
-		}
+		if (*s == '%' && s++)
+			res = handle_var(*s++, &args);
 		else
 		{
 			next = next_escape_or_end(s);
@@ -74,6 +72,7 @@ int	ft_printf(const char *s, ...)
 	return (count);
 }
 
+/*
 int	main(void)
 {
 	unsigned int	u;
@@ -83,3 +82,4 @@ int	main(void)
 	ft_printf("p: %p\ns: %s\n", x, x);
 	ft_printf("X: %X\nx: %x\nu: %u\ni: %i\n", u, u, u, u);
 }
+*/
