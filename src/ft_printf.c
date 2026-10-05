@@ -6,9 +6,10 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 22:01:29 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 22:07:55 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
+#include "ft_printf.h"
 #include "ft_printf_internal.h"
 #include <stdarg.h>
 #include <stdint.h>
