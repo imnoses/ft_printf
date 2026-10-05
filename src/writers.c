@@ -6,7 +6,7 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 19:17:57 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 20:23:45 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 21:17:13 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -29,6 +29,8 @@ int	write_string(va_list *args)
 	char	*s;
 
 	s = (char *)va_arg(*args, uintptr_t);
+	if (!s)
+		return (write(1, "(null)", 6));
 	return (write(1, s, ft_strlen(s)));
 }
 
