@@ -6,7 +6,7 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 17:42:47 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 20:31:24 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../ft_printf.h"
@@ -73,13 +73,24 @@ int	ft_printf(const char *s, ...)
 }
 
 /*
+#include <stdio.h>
+
 int	main(void)
 {
 	unsigned int	u;
 	char			x[] = "a string";
 
 	u = -1;
-	ft_printf("p: %p\ns: %s\n", x, x);
-	ft_printf("X: %X\nx: %x\nu: %u\ni: %i\n", u, u, u, u);
+	printf("\n=== ft ===\n");
+	printf("\n--- %i ---\n", ft_printf("\tp: %p\n\ts: %s", x, x));
+	printf("\n=== og ===\n");
+	printf("\n--- %i ---\n", printf("\tp: %p\n\ts: %s", x, x));
+	printf("\n----------\n");
+	printf("\n=== ft ===\n");
+	printf("\n--- %i ---\n", ft_printf("\tX: %X\n\tx: %x\n\tu: %u\n\ti: %i", u,
+			u, u, u));
+	printf("\n=== og ===\n");
+	printf("\n--- %i ---\n", printf("\tX: %X\n\tx: %x\n\tu: %u\n\ti: %i", u, u,
+			u, u));
 }
 */
