@@ -6,16 +6,12 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 13:04:40 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 13:20:50 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../ft_printf.h"
-#include "../libft/libft.h"
-#include <limits.h>
 #include <stdarg.h>
-#include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <unistd.h>
 
 int	next_escape_or_end(const char *s)

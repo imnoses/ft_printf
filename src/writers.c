@@ -6,13 +6,12 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 19:17:57 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 13:10:10 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 13:32:32 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../ft_printf.h"
-#include "../libft/libft.h"
+#include "ft_printf.h"
+#include "libft.h"
 #include <stdarg.h>
-#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -29,7 +28,7 @@ int	write_string(va_list *args)
 {
 	char	*s;
 
-	s = (char *)va_arg(*args, size_t);
+	s = (char *)va_arg(*args, uintptr_t);
 	return (write(1, s, ft_strlen(s)));
 }
 
