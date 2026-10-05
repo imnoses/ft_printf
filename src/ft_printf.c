@@ -6,15 +6,15 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 20:31:24 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 21:34:09 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../ft_printf.h"
+#include "ft_printf_internal.h"
 #include <stdarg.h>
 #include <stdint.h>
 #include <unistd.h>
 
-int	next_escape_or_end(const char *s)
+static int	next_escape_or_end(const char *s)
 {
 	int	i;
 
