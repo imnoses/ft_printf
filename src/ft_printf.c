@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                       :::      ::::::::    */
-/*   ft_printf.c                                       :+:      :+:    :+:    */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                   +:+ +:+         +:+      */
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 21:34:09 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 21:51:50 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf_internal.h"
@@ -24,6 +24,16 @@ static int	next_escape_or_end(const char *s)
 	return (i);
 }
 
+static int	write_pointer(va_list *args)
+{
+	uintptr_t	u;
+
+	u = va_arg(*args, uintptr_t);
+	if (!u)
+		return (write(1, "(nil)", 5));
+	return (write(1, "0x", 2) + write_uintptr(u));
+}
+
 static int	handle_var(char c, va_list *args)
 {
 	if (c == '%')
@@ -33,7 +43,7 @@ static int	handle_var(char c, va_list *args)
 	if (c == 's')
 		return (write_string(args));
 	if (c == 'p')
-		return (write(1, "0x", 2) + write_uintptr(va_arg(*args, uintptr_t)));
+		return (write_pointer(args));
 	if (c == 'd' || c == 'i')
 		return (write_int(args));
 	if (c == 'u')
@@ -82,9 +92,11 @@ int	main(void)
 
 	u = -1;
 	printf("\n=== ft ===\n");
-	printf("\n--- %i ---\n", ft_printf("\tp: %p\n\ts: %s", x, x));
+	printf("\n--- %i ---\n", ft_printf("\tp: %p\n\ts: %s\n\t!p: %p\n\t!s: %s",
+			x, x, NULL, (char *)NULL));
 	printf("\n=== og ===\n");
-	printf("\n--- %i ---\n", printf("\tp: %p\n\ts: %s", x, x));
+	printf("\n--- %i ---\n", printf("\tp: %p\n\ts: %s\n\t!p: %p\n\t!s: %s", x,
+			x, NULL, (char *)NULL));
 	printf("\n----------\n");
 	printf("\n=== ft ===\n");
 	printf("\n--- %i ---\n", ft_printf("\tX: %X\n\tx: %x\n\tu: %u\n\ti: %i", u,
