@@ -6,14 +6,16 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/03 17:26:13 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 13:04:40 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../ft_printf.h"
 #include "../libft/libft.h"
+#include <limits.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <unistd.h>
 
 int	next_escape_or_end(const char *s)
@@ -23,8 +25,6 @@ int	next_escape_or_end(const char *s)
 	i = -1;
 	while (s[++i] && s[i] != '%')
 		;
-	if (s[i])
-		return (-1);
 	return (i);
 }
 
@@ -37,15 +37,15 @@ static int	handle_var(char c, va_list *args)
 	if (c == 's')
 		return (write_string(args));
 	if (c == 'p')
-		return (write(1, "0x", 2) + write_hex(args, 0));
+		return (write(1, "0x", 2) + write_uintptr(va_arg(*args, uintptr_t)));
 	if (c == 'd' || c == 'i')
-		return (write_decimal(args));
+		return (write_int(args));
 	if (c == 'u')
-		return (write_unsigned(args));
+		return (write_uint_base(va_arg(*args, int), "0123456789"));
 	if (c == 'x')
-		return (write_hex(args, 0));
+		return (write_uint_base(va_arg(*args, int), "0123456789abcdef"));
 	if (c == 'X')
-		return (write_hex(args, 1));
+		return (write_uint_base(va_arg(*args, int), "0123456789ABCDEF"));
 	return (-1);
 }
 
@@ -61,22 +61,29 @@ int	ft_printf(const char *s, ...)
 	{
 		if (*s == '%')
 		{
-			res = handle_var(*(s++), &args);
-			if (res < 0)
-				return (-1);
-			count += res;
+			res = handle_var(*(++s), &args);
+			s++;
 		}
-		next = next_escape_or_end(s);
-		count += write(1, s, next);
-		s += next;
+		else
+		{
+			next = next_escape_or_end(s);
+			res = write(1, s, next);
+			s += next;
+		}
+		if (res < 0)
+			return (-1);
+		count += res;
 	}
+	va_end(args);
 	return (count);
 }
 
 int	main(void)
 {
-	int	i;
+	unsigned int	u;
+	char			x[] = "a string";
 
-	i = 18;
-	ft_printf("something %d\n", i);
+	u = -1;
+	ft_printf("p: %p\ns: %s\n", x, x);
+	ft_printf("X: %X\nx: %x\nu: %u\ni: %i\n", u, u, u, u);
 }

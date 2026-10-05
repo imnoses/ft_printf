@@ -6,13 +6,14 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 19:17:57 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/03 17:21:46 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 13:10:10 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../ft_printf.h"
 #include "../libft/libft.h"
 #include <stdarg.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -32,14 +33,12 @@ int	write_string(va_list *args)
 	return (write(1, s, ft_strlen(s)));
 }
 
-int	write_decimal(va_list *args)
+int	write_int(va_list *args)
 {
-	int		i;
 	char	*s;
 	int		ret;
 
-	i = va_arg(*args, int);
-	s = ft_itoa(i);
+	s = ft_itoa(va_arg(*args, int));
 	if (!s)
 		return (-1);
 	ret = write(1, s, ft_strlen(s));
@@ -47,12 +46,22 @@ int	write_decimal(va_list *args)
 	return (ret);
 }
 
-int	write_unsigned(va_list *args)
+int	write_uint_base(unsigned int i, char *base)
 {
-	return (-1);
+	int	ret;
+	int	base_len;
+
+	base_len = ft_strlen(base);
+	if (i >= 10)
+		ret = write_uint_base(i / base_len, base);
+	return (ret + write(1, &base[i % base_len], 1));
 }
 
-int	write_hex(va_list *args, int is_uppercase)
+int	write_uintptr(uintptr_t i)
 {
-	return (-1);
+	int	ret;
+
+	if (i >= 10)
+		ret = write_uintptr(i / 16);
+	return (ret + write(1, &"0123456789abcdef"[i % 16], 1));
 }
