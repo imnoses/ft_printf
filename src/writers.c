@@ -6,7 +6,7 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 19:17:57 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 17:06:56 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 20:23:45 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -47,12 +47,12 @@ int	write_int(va_list *args)
 
 int	write_uint_base(unsigned int i, char *base)
 {
-	int	ret;
-	int	base_len;
+	int				ret;
+	unsigned int	base_len;
 
 	ret = 0;
 	base_len = ft_strlen(base);
-	if (i >= 10)
+	if (i >= base_len)
 		ret = write_uint_base(i / base_len, base);
 	return (ret + write(1, &base[i % base_len], 1));
 }
@@ -62,7 +62,7 @@ int	write_uintptr(uintptr_t i)
 	int	ret;
 
 	ret = 0;
-	if (i >= 10)
+	if (i >= 16)
 		ret = write_uintptr(i / 16);
 	return (ret + write(1, &"0123456789abcdef"[i % 16], 1));
 }
