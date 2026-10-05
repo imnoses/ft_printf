@@ -6,7 +6,7 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 21:51:50 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/05 22:01:29 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf_internal.h"
@@ -28,7 +28,7 @@ static int	write_pointer(va_list *args)
 {
 	uintptr_t	u;
 
-	u = va_arg(*args, uintptr_t);
+	u = (uintptr_t)va_arg(*args, void *);
 	if (!u)
 		return (write(1, "(nil)", 5));
 	return (write(1, "0x", 2) + write_uintptr(u));
@@ -47,11 +47,13 @@ static int	handle_var(char c, va_list *args)
 	if (c == 'd' || c == 'i')
 		return (write_int(args));
 	if (c == 'u')
-		return (write_uint_base(va_arg(*args, int), "0123456789"));
+		return (write_uint_base(va_arg(*args, unsigned int), "0123456789"));
 	if (c == 'x')
-		return (write_uint_base(va_arg(*args, int), "0123456789abcdef"));
+		return (write_uint_base(va_arg(*args, unsigned int),
+				"0123456789abcdef"));
 	if (c == 'X')
-		return (write_uint_base(va_arg(*args, int), "0123456789ABCDEF"));
+		return (write_uint_base(va_arg(*args, unsigned int),
+				"0123456789ABCDEF"));
 	return (-1);
 }
 
@@ -75,7 +77,7 @@ int	ft_printf(const char *s, ...)
 			s += next;
 		}
 		if (res < 0)
-			return (-1);
+			return (va_end(args), -1);
 		count += res;
 	}
 	va_end(args);
