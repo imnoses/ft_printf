@@ -6,7 +6,7 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/06 16:07:17 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/06 17:17:11 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -26,16 +26,24 @@ static int	next_escape_or_end(const char *s)
 static int	write_pointer(va_list *args)
 {
 	uintptr_t	u;
+	int			ret1;
+	int			ret2;
 
 	u = (uintptr_t)va_arg(*args, void *);
 	if (!u)
 		return (write(1, "(nil)", 5));
-	return (write(1, "0x", 2) + write_uintptr(u));
+	ret1 = write(1, "0x", 2);
+	ret2 = write_uintptr(u);
+	if (ret1 < 0 || ret2 < 0)
+		return (-1);
+	return (ret1 + ret2);
 }
 
 static int	handle_var(char c, va_list *args)
 {
-	if (!c || c == '%')
+	if (!c)
+		return (-1);
+	if (c == '%')
 		return (write(1, "%", 1));
 	if (c == 'c')
 		return (write_char(args));
@@ -53,7 +61,9 @@ static int	handle_var(char c, va_list *args)
 	if (c == 'X')
 		return (write_uint_base(va_arg(*args, unsigned int),
 				"0123456789ABCDEF"));
-	return (write(1, "%", 1) + write(1, &c, 1));
+	if (write(1, "%", 1) + write(1, &c, 1) == 2)
+		return (2);
+	return (-1);
 }
 
 int	ft_printf(const char *s, ...)
@@ -63,6 +73,8 @@ int	ft_printf(const char *s, ...)
 	int		count;
 	int		res;
 
+	if (!s)
+		return (-1);
 	count = 0;
 	va_start(args, s);
 	while (*s)

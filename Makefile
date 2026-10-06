@@ -6,7 +6,7 @@
 #    By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+          #
 #                                                +#+#+#+#+#+   +#+             #
 #    Created: 2026/10/05 13:23:50 by spuschma         #+#    #+#               #
-#    Updated: 2026/10/06 14:11:43 by spuschma        ###   ########.fr         #
+#    Updated: 2026/10/06 16:30:18 by spuschma        ###   ########.fr         #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 DEPS = $(OBJS:.o=.d)
 
-all: ftlib $(NAME)
+all: $(LIBFT) $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
 	cp $(LIBFT) $(NAME)
@@ -43,7 +43,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-ftlib:
+$(LIBFT): libft ;
+
+libft:
 	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
@@ -58,10 +60,9 @@ re:
 	$(MAKE) fclean
 	$(MAKE) all
 
-compiledb:
-	$(MAKE) fclean
+compiledb: fclean
 	compiledb -n make
 
 -include $(DEPS)
 
-.PHONY: all clean fclean re compiledb ftlib
+.PHONY: all clean fclean re compiledb libft
