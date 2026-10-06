@@ -6,13 +6,11 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 14:53:27 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 22:07:55 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/06 14:23:29 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
 #include "ft_printf_internal.h"
-#include <stdarg.h>
-#include <stdint.h>
 #include <unistd.h>
 
 static int	next_escape_or_end(const char *s)
@@ -37,7 +35,7 @@ static int	write_pointer(va_list *args)
 
 static int	handle_var(char c, va_list *args)
 {
-	if (c == '%')
+	if (!c || c == '%')
 		return (write(1, "%", 1));
 	if (c == 'c')
 		return (write_char(args));
@@ -55,7 +53,7 @@ static int	handle_var(char c, va_list *args)
 	if (c == 'X')
 		return (write_uint_base(va_arg(*args, unsigned int),
 				"0123456789ABCDEF"));
-	return (-1);
+	return (write(1, "%", 1) + write(1, &c, 1));
 }
 
 int	ft_printf(const char *s, ...)
