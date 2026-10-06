@@ -6,13 +6,11 @@
 /*   By: spuschma <spuschma@student.42vienna.com>  #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/10/02 19:17:57 by spuschma         #+#    #+#              */
-/*   Updated: 2026/10/05 22:08:33 by spuschma        ###   ########.fr        */
+/*   Updated: 2026/10/06 14:58:42 by spuschma        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf_internal.h"
 #include "libft.h"
-#include <stdarg.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -66,5 +64,7 @@ int	write_uintptr(uintptr_t i)
 	ret = 0;
 	if (i >= 16)
 		ret = write_uintptr(i / 16);
+	if (ret < 0)
+		return (ret);
 	return (ret + write(1, &"0123456789abcdef"[i % 16], 1));
 }
